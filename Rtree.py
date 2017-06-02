@@ -24,7 +24,7 @@ class Rtree:
         self.root = self.create_root(True)
 
     def create_root(self, leaf_bool):
-        init_coordinates = [999999999999, 999999999999, 999999999999, 999999999999]
+        init_coordinates = [float("inf"), float("inf"), float("inf"), float("inf")]
 
         return self.Node(leaf_bool, bounding_box=init_coordinates, children=[], root=True)
 
@@ -35,7 +35,7 @@ class Rtree:
             content = [x.strip() for x in content]
             content = [x.split() for x in content]
             self.r_tree()
-            self.size = int(content[0][0])
+            self.size = float(content[0][0])
             content.pop(0)
             if self.size > 10000:
                 self.b = self.size*0.01
@@ -49,7 +49,7 @@ class Rtree:
             content = f.readlines()
             content = [x.strip() for x in content]
             content = [x.split() for x in content]
-            [self.range_query([int(x[0]), int(x[3]), int(x[1]), int(x[2])]) for x in content]
+            [self.range_query([int(x[0]), float(x[3]), float(x[1]), float(x[2])]) for x in content]
         stop_query = timeit.default_timer()
         f = open('query_results.txt', 'a')
         f.write('Total Time = ' + str(stop_query - start_query) + '\n' +
@@ -61,7 +61,7 @@ class Rtree:
             content = f.readlines()
             content = [x.strip() for x in content]
             content = [x.split() for x in content]
-            [self.nearest([int(x[0]), int(x[1])]) for x in content]
+            [self.nearest([float(x[0]), float(x[1])]) for x in content]
         stop_nn = timeit.default_timer()
         f = open('nn_results.txt', 'a')
         f.write('Total Time = ' + str(stop_nn - start_nn) + '\n' +
@@ -108,7 +108,7 @@ class Rtree:
 
     def nearest(self, coordinates):
         point_id = []
-        distance = 999999999999
+        distance = float("inf")
         self.nearest_neighbor(coordinates, self.root, point_id, distance)
         f = open('nn_results.txt', 'a')
         f.write(str(min(point_id, key=lambda x: x[1])[0]) + '\n')
@@ -116,7 +116,7 @@ class Rtree:
 
     def nearest_neighbor(self, coordinates, node, point_id, dist):
         if node.leaf:
-            distance = 999999999999
+            distance = float("inf")
             for child in node.children:
                 temp = sqrt((child.coordinates[0] - coordinates[0])**2
                             + (child.coordinates[1] - coordinates[1])**2)
@@ -159,7 +159,7 @@ class Rtree:
         if node.leaf:
             return node
 
-        min_increase = 999999999999
+        min_increase = float("inf")
 
         for child in node.children:
             exp = self.get_expansion(child.bounding_box, entry)
@@ -295,10 +295,10 @@ class Rtree:
         best_separation = 0.0
 
         for i in range(2):
-            lower_bound = 999999999999
-            upper_bound = -1*999999999999
-            min_upper_bound = 999999999999
-            max_lower_bound = -1*999999999999
+            lower_bound = float("inf")
+            upper_bound = -1*float("inf")
+            min_upper_bound = float("inf")
+            max_lower_bound = -1*float("inf")
 
             for node in iter(children):
                 if type(node) is self.Node.Entry:
@@ -362,7 +362,7 @@ class Rtree:
 
     def tighten(self, nodes):
             for node in iter(nodes):
-                min_coordinates = [999999999999, -1*999999999999, -1*999999999999, 999999999999]
+                min_coordinates = [float("inf"), -1*float("inf"), -1*float("inf"), float("inf")]
                 for child in iter(node.children):
                     if type(child) is self.Node.Entry:
                         if child.coordinates[0] < min_coordinates[0]:
@@ -410,4 +410,7 @@ class Rtree:
 
 if __name__ == "__main__":
     r = Rtree()
+    if (len(sys.argv[1:]) != 3):
+        raise RuntimeError('Usage: Rtree.py dataset queryset nn_queryset') from error    
     r.load_points(sys.argv[1:])
+
