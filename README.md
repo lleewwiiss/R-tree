@@ -1,4 +1,4 @@
-# R-tree
+# R-tree - Python
 Based loosely off:
     Enhanced nearest neighbour search on the R-tree (Cheung, Fu 1998)
     &
