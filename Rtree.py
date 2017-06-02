@@ -1,5 +1,5 @@
 """
-Assignment 1 by Lewis Smith - 42909372
+Lewis Smith
 Based loosely off the psuedo-code in:
     Enhanced nearest neighbour search on the R-tree (Cheung, Fu 1998)
     &
@@ -247,13 +247,13 @@ class Rtree:
 
         while len(childs) != 0:
             if len(nodes[0].children) >= 2 and len(nodes[1].children) + len(childs) == 2:
-                nodes[1].children = list(childs)
+                nodes[1].children.extend(list(childs))
                 childs = []
                 self.tighten(nodes)
 
                 return nodes
             elif len(nodes[1].children) >= 2 and len(nodes[0].children) + len(childs) == 2:
-                nodes[0].children = list(childs)
+                nodes[0].children.extend(list(childs))
                 childs = []
                 self.tighten(nodes)
 
@@ -343,9 +343,9 @@ class Rtree:
                 separation = -1.0
             else:
                 if min_upper_bound == max_lower_bound or upper_bound == lower_bound:
-                    separation = 0
+                    separation = -1.0
                 else:
-                    separation = abs((min_upper_bound-max_lower_bound)/(upper_bound-lower_bound))
+                    separation = abs((max_lower_bound-min_upper_bound)/(upper_bound-lower_bound))
 
             if separation >= best_separation:
                 seeds = [node_lower_bound, node_upper_bound]
