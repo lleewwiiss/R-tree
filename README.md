@@ -7,22 +7,23 @@ Based loosely off:
 ## Input Examples:
 
 ### Data set:
-n
-id 1 x 1 y 1
-id 2 x 2 y 2
-...
-id n x n y n
+n  
+id 1 x1 y1  
+id 2 x2 y2  
+...  
+id n xn yn  
 
 ### Range Query set:
-x 1 x’ 1 y 1 y’ 1
-x 2 x’ 2 y 2 y’ 2
-...
-x n x’ n y n y’ n
+x1 x’1 y1 y’1  
+x2 x’2 y2 y’2  
+...  
+xn x’n yn y’n  
 
+### Nearest Neighbour set:
+x1 y1  
+x2 y2  
+...  
+xn yn 
 
-### Nearest Neigbour set:
-
-x 1 y 1
-x 2 y 2
-...
-x n y n
+## TODO:
+Comment Code
