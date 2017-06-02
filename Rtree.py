@@ -411,6 +411,6 @@ class Rtree:
 if __name__ == "__main__":
     r = Rtree()
     if (len(sys.argv[1:]) != 3):
-        raise RuntimeError('Usage: Rtree.py dataset queryset nn_queryset') from error    
+        raise ValueError('Usage: Rtree.py dataset queryset nn_queryset')
     r.load_points(sys.argv[1:])
 
